@@ -1,5 +1,6 @@
 
-const db = require('../util/database');
+const Sequelize = require('sequelize');
+const sequelize = require('../util/database');
 class Product {
     constructor(products){
         this.products = products
