@@ -4,7 +4,32 @@
    <main>
         <div class="grid">
             Product Detail
-            <%= productId%>
+            <% if(product){%>
+            <article class="card product-item">
+                <header class="card__header">
+                    <h1 class="product__title">
+                        <%= product['title']%>
+                    </h1>
+                </header>
+                <div class="card__image">
+                    <img src="<%=product.image%>" width="250px" height="250px" alt="" srcset="">
+                </div>
+                <div class="card__content">
+                    <h2 class=""><%= product.price%></h2>
+                    <p><%=product.description%></p>
+                </div>
+                <div class="card__actions">
+                    <a href="product-detail/<%=product.id%>">
+                        <button class="btn">Detail</button>
+                    </a>
+                    <a href="add_to_cart/<%=product.id%>">
+                        <button class="btn">Add to Cart</button>
+                    </a>
+                </div>
+            </article>
+            <%}else{%>
+                <h3>No Product found</h3>
+                <%}%>
         </div>
     </main>
 <%- include('../layout/footer')%>

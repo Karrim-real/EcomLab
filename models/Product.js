@@ -1,50 +1,20 @@
 
-const fs = require('fs');
-const path = require('path');
+const db = require('../util/database');
 class Product {
     constructor(products){
         this.products = products
     }
 
-    save(){
-       const p = path.join(path.dirname(require.main.filename), 'data', 'product.json')
-        // products.push(this)
-        fs.readFile(p,(err, fileContent)=> {
-            let products = [];
-            if (!err) {
-                products = JSON.parse(fileContent)
-            }
-            const date = new Date();
-            this.products.id = Math.round(date.getUTCMilliseconds());         
-            products.push(this.products);
-            // console.log('product details',this.products);
-            fs.writeFileSync(p, JSON.stringify(products), err => {
-                console.log(err);
-            })
-        })
-        
+    save(){        
+       db.execute("INSERT INTO products (title, price, description, image) VALUES (?,?,?,?)", [this.products.name, this.products.price, this.products.description, this.products.image_url])
     }
 
-    static fetchAllProducts(cb){
-       const p = path.join(path.dirname(require.main.filename), 'data', 'product.json')
-       fs.readFile(p, (err, fileContent)=> {
-        if (!err) {
-           return cb(JSON.parse(fileContent))   
-        }
-        console.log(err);
-        return cb([]);
-       })
+    static fetchAllProducts(){
+      return db.execute("SELECT * FROM products")
     }
 
-    static fetchProduct(id, cb){
-        const p = path.join(path.dirname(require.main.filename), 'data', 'product.json')
-       fs.readFile(p, (err, fileContent)=> {
-        if (!err) {
-           return cb(JSON.parse(fileContent))   
-        }
-        console.log(err);
-        return cb([]);
-       })
+    static fetchProduct(id){
+        return db.execute("SELECT * FROM products WHERE id = ? LIMIT 1",[id])
     }
 }
 

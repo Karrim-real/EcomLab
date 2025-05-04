@@ -3,36 +3,41 @@ const Product = require("../models/Product");
 
 
 exports.getIndex = (req, res, next)=> {
-     Product.fetchAllProducts((products)=> {
+     Product.fetchAllProducts().then(([products, fieldData]) =>{
+        // console.log(products);
         res.status(200).render('shop/index', {
             pageTitle: "Shop - Products",
             products: products,
             hasProduct : products.length > 0,
             activePage : true
         }); 
-    });
+     }).catch(err => console.log(err));
  
 }
 exports.getProducts = (req, res, next) => {
-    Product.fetchAllProducts((products)=> {
+    Product.fetchAllProducts().then(([products, fieldData]) =>{
+        // console.log(products);
+        
         res.status(200).render('shop/product-list', {
             pageTitle: "Shop - Products",
             products: products,
             hasProduct : products.length > 0,
             activePage : true
-        }); 
-    });
+        });
+    }).catch(err => console.log(err));
 }
 
 exports.getProduct = (req, res, next) => {
         const productId = req.params.id
-        console.log(productId);
-        
-        res.status(200).render('shop/product-detail', {
-            pageTitle: "Shop - Product Detail",
-            productId: productId,
-            activePage : true
-        }); 
+        Product.fetchProduct(productId).then(([product, fieldData]) => {
+            console.log(product[0]['title']);
+            res.status(200).render('shop/product-detail', {
+                pageTitle: "Shop - Product Detail",
+                productId: productId,
+                product : product[0],
+                activePage : true
+            }); 
+        }).catch(err => console.log(err));
     
 }
 

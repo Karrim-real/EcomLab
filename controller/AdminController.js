@@ -2,13 +2,16 @@ const Product = require("../models/Product");
 //Admin Products
 exports.getProduct = (req, res,next) => {
     // console.log('First Middleware');
-    Product.fetchAllProducts((products)=> {
+    Product.fetchAllProducts().then(([products, fieldData]) => {
         res.status(200).render('admin/products', {
             pageTitle: "Product Lists",
             products: products,
             hasProduct : products.length > 0,
             activePage : true
         }); 
+    }).catch((err) => {
+        console.log(err);
+        
     });
    
 }
@@ -22,6 +25,7 @@ exports.getAddProduct = (req, res,next) => {
 
 //Post Product
 exports.postAddProduct = (req, res, next)=>{
+    // console.log(req.body);
     const product = new Product(req.body);
     product.save()
     res.redirect('/');

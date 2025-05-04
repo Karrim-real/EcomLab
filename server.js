@@ -14,11 +14,11 @@ app.use(bodyParser.urlencoded({
 }))
 
 //db connections
-database.execute('SELECT * FROM products')
-.then((results)=>{
-    console.log(results[0][0]);  
-})
-.catch(err => console.log(err))
+// database.execute('SELECT * FROM products')
+// .then((results)=>{
+//     console.log(results[0][0]);  
+// })
+// .catch(err => console.log(err))
 
 app.use(express.static(path.join(__dirname, 'public')))
 //Middleware
