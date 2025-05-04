@@ -13,7 +13,9 @@ class Product {
             let products = [];
             if (!err) {
                 products = JSON.parse(fileContent)
-            }            
+            }
+            const date = new Date();
+            this.products.id = Math.round(date.getUTCMilliseconds());         
             products.push(this.products);
             // console.log('product details',this.products);
             fs.writeFileSync(p, JSON.stringify(products), err => {
@@ -25,6 +27,17 @@ class Product {
 
     static fetchAllProducts(cb){
        const p = path.join(path.dirname(require.main.filename), 'data', 'product.json')
+       fs.readFile(p, (err, fileContent)=> {
+        if (!err) {
+           return cb(JSON.parse(fileContent))   
+        }
+        console.log(err);
+        return cb([]);
+       })
+    }
+
+    static fetchProduct(id, cb){
+        const p = path.join(path.dirname(require.main.filename), 'data', 'product.json')
        fs.readFile(p, (err, fileContent)=> {
         if (!err) {
            return cb(JSON.parse(fileContent))   

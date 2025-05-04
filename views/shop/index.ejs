@@ -1,9 +1,37 @@
 
 <%- include('../layout/header')%>
 <%- include('../layout/nav')%>
-   <main>
+   
+    <main>
         <div class="grid">
-            Products List
+            <% if(products.length > 0){%>
+                <%products.forEach(item =>{ %>
+                    <article class="card product-item">
+                        <header class="card__header">
+                            <h1 class="product__title">
+                                <%= item.name%>
+                            </h1>
+                        </header>
+                        <div class="card__image">
+                            <img src="<%=item.image_url%>" alt="" srcset="">
+                        </div>
+                        <div class="card__content">
+                            <h2 class=""><%= item.price%></h2>
+                            <p><%=item.description%></p>
+                        </div>
+                        <div class="card__actions">
+                            <a href="product-detail/<%=item.id%>">
+                                <button class="btn">Detail</button>
+                            </a>
+                            <a href="add_to_cart/<%=item.id%>">
+                                <button class="btn">Add to Cart</button>
+                            </a>
+                        </div>
+                    </article>
+                <%})%>
+            <%}else{%>
+                <h3>No Product Found</h3>
+                <%}%>
         </div>
     </main>
 <%- include('../layout/footer')%>

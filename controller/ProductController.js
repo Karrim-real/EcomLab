@@ -1,30 +1,10 @@
 const Product = require("../models/Product");
 
-//Admin Products
-exports.getProduct = (req, res,next) => {
-    // console.log('First Middleware');
-    res.render('admin/products', {
-        pageTitle: "Product Lists",
-    });
-}
-//Admin Add product page
-exports.getAddProduct = (req, res,next) => {
-    // console.log('First Middleware');
-    res.render('admin/add-product', {
-        pageTitle: "Add Product",
-    });
-}
 
-//Post Product
-exports.postAddProduct = (req, res, next)=>{
-    const product = new Product(req.body);
-    product.save()
-    res.redirect('/');
-}
 
-exports.getRecentProducts = (req, res, next)=> {
+exports.getIndex = (req, res, next)=> {
      Product.fetchAllProducts((products)=> {
-        res.status(200).render('shop/product-list', {
+        res.status(200).render('shop/index', {
             pageTitle: "Shop - Products",
             products: products,
             hasProduct : products.length > 0,
@@ -42,6 +22,18 @@ exports.getProducts = (req, res, next) => {
             activePage : true
         }); 
     });
+}
+
+exports.getProduct = (req, res, next) => {
+        const productId = req.params.id
+        console.log(productId);
+        
+        res.status(200).render('shop/product-detail', {
+            pageTitle: "Shop - Product Detail",
+            productId: productId,
+            activePage : true
+        }); 
+    
 }
 
 exports.getCart = (re, res, next) => {
